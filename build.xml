@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<project name="xmlwise" basedir="." default="build">
+
+	<tstamp/>
+	<property file="version.properties"/>
+
+	<target name="init" description="init">
+		<!-- Create our temporary directories -->
+		<mkdir dir="_TEMP/classes"/>
+		<mkdir dir="_DIST"/>
+	</target>
+
+	<target name="clear" description="clear temporary directories">
+		<delete file="_TEMP" quiet="true"/>
+	</target>
+
+	<target name="compile" depends="init" description="Compile the sources">
+		<javac srcdir="src/main"
+		       destdir="_TEMP/classes"
+		       source="1.5"
+		       optimize="on"/>
+	</target>
+
+	<target name="javadoc" description="Generate javadoc">
+		  <javadoc packagenames="xmlwise.*" sourcepath="src/main"
+		           destdir="_TEMP/docs/api"
+		           author="true"
+		           version="true"
+		           use="true"
+		           windowtitle="Xmlwise API">
+			  <doctitle><![CDATA[<h1>Xmlwise</h1>]]></doctitle>
+			  <tag name="todo" scope="all" description="To do:"/>
+		  </javadoc>
+	</target>
+
+	<target name="compile_debug" depends="init" description="Compile the sources with debug info">
+			<javac srcdir="src/main" destdir="_TEMP/classes" source="1.5"
+			       debug="yes" debuglevel="lines,source" optimize="on"/>
+	</target>
+
+	<!-- Creates a manifest -->
+	<target name="create_manifest" description="Creates a manifest">
+		<mkdir dir="_TEMP/classes/META-INF"/>
+		<manifest file="_TEMP/classes/META-INF/MANIFEST.MF">
+			<attribute name="Created-By" value="${user.name}"/>
+			<attribute name="Sealed" value="true"/>
+			 <section name="naga">
+				 <attribute name="Specification-Title" value="Xmlwise"/>
+				 <attribute name="Specification-Version" value="${major.version}.${minor.version}"/>
+				 <attribute name="Specification-Vendor" value="Xmlwise"/>
+				 <attribute name="Implementation-Title" value="xmlwise"/>
+				 <attribute name="Implementation-Version" value="Build ${build.number} ${TODAY}"/>
+				 <attribute name="Implementation-Vendor" value="Xmlwise"/>
+			 </section>
+		</manifest>
+	</target>
+
+	<target name="build" depends="compile, create_manifest" description="Build jar">
+		<buildnumber file="version.properties"/>
+		<delete dir="_TEMP/classes/src"/>
+		<jar destfile="_DIST/xmlwise-${major.version}_${minor.version}-r${build.number}.jar"
+		     excludes="**/examples/**"
+		     basedir="_TEMP/classes" manifest="_TEMP/classes/META-INF/MANIFEST.MF"/>
+		<copydir src="src/main/" dest="_TEMP/classes/src"/>
+		<jar destfile="_DIST/xmlwise-debug-${major.version}_${minor.version}-r${build.number}.jar" manifest="_TEMP/classes/META-INF/MANIFEST.MF">
+			<fileset dir="_TEMP/classes"/>
+			<fileset dir="_TEMP" includes="docs/**"/>
+		</jar>
+	</target>
+
+</project>
+
