@@ -182,7 +182,7 @@ public class XmlElement extends LinkedList<XmlElement>
 		return false;
 	}
 	/**
-	 * Renders this as XML. Does not do proper XML-escaping.
+	 * Renders this as XML.
 	 *
 	 * @return an xml string based on this element and its sub-elements.
 	 */
@@ -200,7 +200,7 @@ public class XmlElement extends LinkedList<XmlElement>
 		else
 		{
 			builder.append('>');
-			builder.append(m_value);
+			builder.append(Xml.escapeXML(m_value));
 			for (XmlElement element : this)
 			{
 				builder.append(element.toXml());

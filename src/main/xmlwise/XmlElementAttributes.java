@@ -38,7 +38,7 @@ public class XmlElementAttributes extends HashMap<String, String>
 	 *
 	 * @param attribute the name of the attribute.
 	 * @return the integer value of the attribute.
-	 * @throws txntree.xml.XmlParseException if we fail to parse this attribute as an int, or the attribute is missing.
+	 * @throws XmlParseException if we fail to parse this attribute as an int, or the attribute is missing.
 	 */
 	public int getInt(String attribute) throws XmlParseException
 	{
@@ -97,7 +97,8 @@ public class XmlElementAttributes extends HashMap<String, String>
 		StringBuilder builder = new StringBuilder(10 * size());
 		for (Map.Entry<String, String> entry : entrySet())
 		{
-			builder.append(' ').append(entry.getKey()).append("=").append("'").append(entry.getValue()).append("'");
+			builder.append(' ').append(entry.getKey()).append("=").append("'");
+			builder.append(Xml.escapeXML(entry.getValue())).append("'");
 		}
 		return builder.toString();
 	}

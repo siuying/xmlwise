@@ -1,0 +1,154 @@
+package xmlwise;
+
+/**
+ * @author Christoffer Lerno 
+ * @version $Revision$ $Date$   $Author$
+ */
+
+import junit.framework.*;
+import xmlwise.XmlElement;
+
+import java.util.List;
+
+public class XmlElementTest extends TestCase
+{
+	XmlElement m_xmlElement;
+
+	protected void setUp() throws Exception
+	{
+		m_xmlElement = new XmlElement(Xml.createDocument(
+				"<x ab='cd&gt;' ef='12'><dfe/><ag>1</ag><ag/><jo test='yes'>hej&lt;</jo></x>").getDocumentElement());
+	}
+
+	public void testToXml() throws Exception
+	{
+		String backToXml = m_xmlElement.toXml();
+		assertTrue("<x ab='cd&gt;' ef='12'><dfe/><ag>1</ag><ag/><jo test='yes'>hej&lt;</jo></x>".equals(backToXml)
+		           || "<x ef='12' ab='cd&gt;'><dfe/><ag>1</ag><ag/><jo test='yes'>hej&lt;</jo></x>".equals(backToXml));
+	}
+
+	public void testContent() throws XmlParseException
+	{
+		assertEquals("hej<", m_xmlElement.getUnique("jo").getValue());
+	}
+	public void testGetUnique() throws Exception
+	{
+		assertEquals("<dfe/>", m_xmlElement.getUnique("dfe").toXml());
+	}
+
+
+	public void testGetUniqueFailMore() throws Exception
+	{
+		try
+		{
+			m_xmlElement.getUnique("ag");
+			fail();
+		}
+		catch (XmlParseException e)
+		{
+		}
+	}
+
+	public void testGetUniqueNotExist() throws Exception
+	{
+		try
+		{
+			m_xmlElement.getUnique("fiej");
+			fail();
+		}
+		catch (XmlParseException e)
+		{
+		}
+	}
+
+	public void testGet() throws Exception
+	{
+		List<XmlElement> elements = m_xmlElement.get("ag");
+		assertEquals("<ag>1</ag>", elements.get(0).toXml());
+		assertEquals("<ag/>", elements.get(1).toXml());
+		assertEquals(2, elements.size());
+	}
+
+	public void testGetNone() throws Exception
+	{
+		assertEquals(0, m_xmlElement.get("fek").size());
+	}
+
+	public void testGetIntAttribute() throws Exception
+	{
+		assertEquals(12, m_xmlElement.getIntAttribute("ef"));
+		assertEquals(12, m_xmlElement.getIntAttribute("ef", 3));
+	}
+
+	public void testGetIntAttributeWithDefault() throws Exception
+	{
+		assertEquals(3, m_xmlElement.getIntAttribute("ok", 3));
+	}
+
+	public void testGetIntAttributeError() throws Exception
+	{
+		try
+		{
+			m_xmlElement.getIntAttribute("ok");
+			fail("Should not work");
+		}
+		catch (XmlParseException e)
+		{
+		}
+	}
+
+	public void testGetBoolAttribute() throws Exception
+	{
+		assertTrue(m_xmlElement.getUnique("jo").getBoolAttribute("test"));
+	}
+
+	public void testGetBoolAttributeWithDefault() throws Exception
+	{
+		assertTrue(m_xmlElement.getBoolAttribute("ok", true));
+		assertTrue(m_xmlElement.getUnique("jo").getBoolAttribute("test", false));
+	}
+
+
+	public void testGetBoolAttributeErrorMalformed() throws Exception
+	{
+		try
+		{
+			m_xmlElement.getBoolAttribute("ef");
+			fail("Should not work");
+		}
+		catch (XmlParseException e)
+		{
+		}
+	}
+
+	public void testGetBoolAttributeErrorMissing() throws Exception
+	{
+		try
+		{
+			m_xmlElement.getBoolAttribute("ok");
+			fail("Should not work");
+		}
+		catch (XmlParseException e)
+		{
+		}
+	}
+
+	public void testGetAttribute() throws Exception
+	{
+		assertEquals("12", m_xmlElement.getAttribute("ef"));
+		assertEquals("cd>", m_xmlElement.getAttribute("ab"));
+		assertEquals(null, m_xmlElement.getAttribute("not_present"));
+	}
+
+	public void testGetAttributeWithDefault() throws Exception
+	{
+		assertEquals("12", m_xmlElement.getAttribute("ef", "24"));
+		assertEquals("ok", m_xmlElement.getAttribute("not_present", "ok"));
+	}
+
+	public void testContains() throws Exception
+	{
+		assertTrue(m_xmlElement.contains("jo"));
+		assertFalse(m_xmlElement.contains("missing_element"));
+	}
+}
