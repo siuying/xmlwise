@@ -1,34 +1,36 @@
 package xmlwise;
 /**
  * @author Christoffer Lerno
- * @version $Revision$ $Date$   $Author$
  */
 
 import junit.framework.TestCase;
 
 public class XmlElementAttributesTest extends TestCase
 {
-	XmlElementAttributes m_xmlElementAttributes;
+	XmlElementAttributes m_attributes;
+
+	@Override
+	protected void setUp() throws Exception
+	{
+		m_attributes = new XmlElementAttributes(Xml.createDocument("<x ab='cd' ef='12' y='12.5'/>").getDocumentElement());
+	}
 
 	public void testXmlElementAttributes() throws Exception
 	{
-		XmlElementAttributes attributes = new XmlElementAttributes(Xml.createDocument("<x ab='cd' ef='12'/>").getDocumentElement());
-		assertEquals("cd", attributes.get("ab"));
-		assertEquals("12", attributes.get("ef"));
+		assertEquals("cd", m_attributes.get("ab"));
+		assertEquals("12", m_attributes.get("ef"));
 	}
 
 	public void testGetInt() throws Exception
 	{
-		XmlElementAttributes attributes = new XmlElementAttributes(Xml.createDocument("<x ab='cd' ef='12'/>").getDocumentElement());
-		assertEquals(12, attributes.getInt("ef"));
+		assertEquals(12, m_attributes.getInt("ef"));
 	}
 
 	public void testGetIntErrorMissing() throws Exception
 	{
-		XmlElementAttributes attributes = new XmlElementAttributes(Xml.createDocument("<x ab='cd' ef='12'/>").getDocumentElement());
 		try
 		{
-			attributes.getInt("gh");
+			m_attributes.getInt("gh");
 			fail();
 		}
 		catch (XmlParseException e)
@@ -37,16 +39,43 @@ public class XmlElementAttributesTest extends TestCase
 
 	public void testGetIntErrorMalformed() throws Exception
 	{
-		XmlElementAttributes attributes = new XmlElementAttributes(Xml.createDocument("<x ab='cd' ef='12'/>").getDocumentElement());
 		try
 		{
-			attributes.getInt("ab");
+			m_attributes.getInt("ab");
 			fail();
 		}
 		catch (XmlParseException e)
 		{}
 	}
 
+	public void testGetDouble() throws Exception
+	{
+		assertEquals(12.5, m_attributes.getDouble("y"));
+	}
+
+	public void testGetDoubleErrorMissing() throws Exception
+	{
+		try
+		{
+			m_attributes.getDouble("gh");
+			fail();
+		}
+		catch (XmlParseException e)
+		{}
+	}
+
+	public void testGetDoubleErrorMalformed() throws Exception
+	{
+		try
+		{
+			m_attributes.getDouble("ab");
+			fail();
+		}
+		catch (XmlParseException e)
+		{}
+	}
+
+	@SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
 	public void testGetBoolean() throws Exception
 	{
 		XmlElementAttributes attributes = new XmlElementAttributes(Xml.createDocument("<x ab='yes' ef='12' gh='true' ij='y' kl='no' m='n' o='false'/>").getDocumentElement());
@@ -61,17 +90,16 @@ public class XmlElementAttributesTest extends TestCase
 
 	public void testGetBooleanError() throws Exception
 	{
-		XmlElementAttributes attributes = new XmlElementAttributes(Xml.createDocument("<x ab='yes' ef='12' gh='true' ij='y'/>").getDocumentElement());
 		try
 		{
-			attributes.getBoolean("ef");
+			m_attributes.getBoolean("ab");
 			fail();
 		}
 		catch (XmlParseException e)
 		{}
 		try
 		{
-			attributes.getBoolean("notpresent");
+			m_attributes.getBoolean("notpresent");
 			fail();
 		}
 		catch (XmlParseException e)

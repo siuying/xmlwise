@@ -12,7 +12,6 @@ import java.io.StringReader;
  * XML helper methods.
  *
  * @author Christoffer Lerno
- * @version $Revision$ $Date$   $Author$
  */
 public class Xml
 {
@@ -43,7 +42,7 @@ public class Xml
 	}
 
 	/**
-	 * Loads an XML document.
+	 * Loads an XML document ignoring DTD-validation.
 	 *
 	 * @param fileName the path to the file.
 	 * @return an XML document.
@@ -70,6 +69,22 @@ public class Xml
 		}
 	}
 
+	/**
+	 * Escapes a string to be used in an xml document.
+	 * <p>
+	 * The following replacements are made:
+	 * <p>
+	 * <table>
+	 * <tr><td>&lt;</td><td>&amp;lt;</td></tr>
+	 * <tr><td>&gt;</td><td>&amp;gt;</td></tr>
+	 * <tr><td>&amp;</td><td>&amp;amp;</td></tr>
+	 * <tr><td>&quot;</td><td>&amp;quot;</td></tr>
+	 * <tr><td>'</td><td>&amp;apos;</td></tr>
+	 * </table>
+	 *
+	 * @param stringToEscape the string to escape.
+	 * @return an escaped string suitable for use in an xml document.
+	 */
 	public static String escapeXML(String stringToEscape)
 	{
 		int size = stringToEscape.length();

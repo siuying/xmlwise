@@ -1,12 +1,9 @@
 package xmlwise;
 /**
  * @author Christoffer Lerno 
- * @version $Revision$ $Date$   $Author$
  */
 
 import junit.framework.*;
-import xmlwise.Xml;
-import org.w3c.dom.Document;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -33,6 +30,7 @@ public class XmlTest extends TestCase
 		assertEquals("<x>foo</x>", e.toXml());
 	}
 
+	@SuppressWarnings({"IOResourceOpenedButNotSafelyClosed"})
 	public void testFromFile() throws Exception
 	{
 		File f = File.createTempFile("xmltest", "xml");
@@ -45,6 +43,7 @@ public class XmlTest extends TestCase
 	}
 
 
+	@SuppressWarnings({"IOResourceOpenedButNotSafelyClosed"})
 	public void testFromFileParseFail() throws Exception
 	{
 		File f = File.createTempFile("xmltest", "xml");

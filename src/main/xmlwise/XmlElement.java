@@ -9,9 +9,10 @@ import java.util.LinkedList;
 /**
  * A simplified XML Element that only has an attribute map, a list of sub elements a text value and
  * a name.
+ * <p>
+ * This is the basic entity of the xmlwise library.
  *
  * @author Christoffer Lerno
- * @version $Revision$ $Date$   $Author$
  */
 @SuppressWarnings({"serial"})
 public class XmlElement extends LinkedList<XmlElement>
@@ -23,7 +24,7 @@ public class XmlElement extends LinkedList<XmlElement>
 	/**
 	 * Creates a new XmlElement given an Element object.
 	 *
-	 * @param element the element to construct this object from.
+	 * @param element the document element to construct this object from.
 	 */
 	public XmlElement(Element element)
 	{
@@ -89,6 +90,31 @@ public class XmlElement extends LinkedList<XmlElement>
 	}
 
 	/**
+	 * Get a double attribute for this element.
+	 *
+	 * @param attribute the name of the attribute.
+	 * @return the double value of the attribute.
+	 * @throws XmlParseException if we fail to parse this attribute as an double, or the attribute is missing.
+	 */
+	public double getDoubleAttribute(String attribute) throws XmlParseException
+	{
+		return getAttributes().getDouble(attribute);
+	}
+
+	/**
+	 * Get an double attribute for this element, defaulting to a default value if the attribute is missing.
+	 *
+	 * @param attribute the name of the attribute.
+	 * @param defaultValue the default value for the attribute, returned if the attribute is missing.
+	 * @return the double value of the attribute or the default value if the attribute is missing.
+	 * @throws XmlParseException if we fail to parse this attribute as an double.
+	 */
+	public double getDoubleAttribute(String attribute, double defaultValue) throws XmlParseException
+	{
+		return containsAttribute(attribute) ? getDoubleAttribute(attribute) : defaultValue;
+	}
+
+	/**
 	 * Get a (string) attribute for this element, defaulting to a default value if the attribute is missing.
 	 *
 	 * @param attribute the name of the attribute.
@@ -148,9 +174,10 @@ public class XmlElement extends LinkedList<XmlElement>
 	/**
 	 * Get all elements matching the given key.
 	 *
-	 * @param name the key to match ignoring case.
+	 * @param name the key to match.
 	 * @return a linked list of matching xml elements
 	 */
+	@SuppressWarnings({"MethodOverloadsMethodOfSuperclass"})
 	public LinkedList<XmlElement> get(String name)
 	{
 		LinkedList<XmlElement> list = new LinkedList<XmlElement>();
@@ -170,6 +197,7 @@ public class XmlElement extends LinkedList<XmlElement>
 	 * @param key the name of the sub-element.
 	 * @return true if the element exists, false otherwise.
 	 */
+	@SuppressWarnings({"MethodOverloadsMethodOfSuperclass"})
 	public boolean contains(String key)
 	{
 		for (XmlElement element : this)
@@ -210,12 +238,26 @@ public class XmlElement extends LinkedList<XmlElement>
 		return builder.toString();
 	}
 
+	/**
+	 * Get the string value contained in this element.
+	 * <p>
+	 * E.g. the element for <code>&lt;node&gt;foo&lt;/node&gt;</code>
+	 * would return "foo" as its value.
+	 * <p>
+	 * Note that this value will be a concatenation of all strings
+	 * directly inside the element, even if the element contains
+	 * sub elements.
+	 *
+	 * @return the string value contained inside this element.
+	 */
 	public String getValue()
 	{
 		return m_value;
 	}
 
 	/**
+	 * Returns a map with all attributes of this element.
+	 *
 	 * @return a map with the attributes for this element.
 	 */
 	public XmlElementAttributes getAttributes()
@@ -224,7 +266,12 @@ public class XmlElement extends LinkedList<XmlElement>
 	}
 
 	/**
-	 * @return the name of this attribute.
+	 * Returns the name of this element.
+	 * <p>
+	 * E.g. the element for <code>&lt;node&gt;foo&lt;/node&gt;</code>
+	 * would return "node" as its name.
+	 *
+	 * @return the name of this element.
 	 */
 	public String getName()
 	{

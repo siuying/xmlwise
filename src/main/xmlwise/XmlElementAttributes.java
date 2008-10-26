@@ -9,10 +9,13 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
- * Creates a holder for xml element attributes.
+ * This is a hash map containing all attributes of a single
+ * element.
+ * <p>
+ * Aside from the hash map methods, it also has convenience
+ * methods for extracting integers, booleans and doubles.
  *
  * @author Christoffer Lerno
- * @version $Revision$ $Date$   $Author$
  */
 @SuppressWarnings({"serial"})
 public class XmlElementAttributes extends HashMap<String, String>
@@ -54,6 +57,30 @@ public class XmlElementAttributes extends HashMap<String, String>
 		catch (NumberFormatException e)
 		{
 			throw new XmlParseException("Failed to parse int attribute " + attribute, e);
+		}
+	}
+
+	/**
+	 * Get a double attribute.
+	 *
+	 * @param attribute the name of the attribute.
+	 * @return the double value of the attribute.
+	 * @throws XmlParseException if we fail to parse this attribute as an double, or the attribute is missing.
+	 */
+	public double getDouble(String attribute) throws XmlParseException
+	{
+		String value = get(attribute);
+		if (value == null)
+		{
+			throw new XmlParseException("Could not find attribute " + attribute);
+		}
+		try
+		{
+			return Double.parseDouble(value);
+		}
+		catch (NumberFormatException e)
+		{
+			throw new XmlParseException("Failed to parse double attribute " + attribute, e);
 		}
 	}
 

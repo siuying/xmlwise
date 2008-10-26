@@ -2,11 +2,9 @@ package xmlwise;
 
 /**
  * @author Christoffer Lerno 
- * @version $Revision$ $Date$   $Author$
  */
 
 import junit.framework.*;
-import xmlwise.XmlElement;
 
 import java.util.List;
 
@@ -17,14 +15,14 @@ public class XmlElementTest extends TestCase
 	protected void setUp() throws Exception
 	{
 		m_xmlElement = new XmlElement(Xml.createDocument(
-				"<x ab='cd&gt;' ef='12'><dfe/><ag>1</ag><ag/><jo test='yes'>hej&lt;</jo></x>").getDocumentElement());
+				"<x ab='cd&gt;' ef='12'><dfe x='34.1'/><ag>1</ag><ag/><jo test='yes'>hej&lt;</jo></x>").getDocumentElement());
 	}
 
 	public void testToXml() throws Exception
 	{
 		String backToXml = m_xmlElement.toXml();
-		assertTrue("<x ab='cd&gt;' ef='12'><dfe/><ag>1</ag><ag/><jo test='yes'>hej&lt;</jo></x>".equals(backToXml)
-		           || "<x ef='12' ab='cd&gt;'><dfe/><ag>1</ag><ag/><jo test='yes'>hej&lt;</jo></x>".equals(backToXml));
+		assertTrue("<x ab='cd&gt;' ef='12'><dfe x='34.1'/><ag>1</ag><ag/><jo test='yes'>hej&lt;</jo></x>".equals(backToXml)
+		           || "<x ef='12' ab='cd&gt;'><dfe x='34.1'/><ag>1</ag><ag/><jo test='yes'>hej&lt;</jo></x>".equals(backToXml));
 	}
 
 	public void testContent() throws XmlParseException
@@ -33,7 +31,7 @@ public class XmlElementTest extends TestCase
 	}
 	public void testGetUnique() throws Exception
 	{
-		assertEquals("<dfe/>", m_xmlElement.getUnique("dfe").toXml());
+		assertEquals("<dfe x='34.1'/>", m_xmlElement.getUnique("dfe").toXml());
 	}
 
 
@@ -90,6 +88,30 @@ public class XmlElementTest extends TestCase
 		try
 		{
 			m_xmlElement.getIntAttribute("ok");
+			fail("Should not work");
+		}
+		catch (XmlParseException e)
+		{
+		}
+	}
+
+	public void testGetDoubleAttribute() throws Exception
+	{
+		XmlElement element = m_xmlElement.getUnique("dfe");
+		assertEquals(34.1, element.getDoubleAttribute("x"));
+		assertEquals(34.1, element.getDoubleAttribute("x", 3));
+	}
+
+	public void testGetDoubleAttributeWithDefault() throws Exception
+	{
+		assertEquals(3.4, m_xmlElement.getDoubleAttribute("ok", 3.4));
+	}
+
+	public void testGetDoubleAttributeError() throws Exception
+	{
+		try
+		{
+			m_xmlElement.getDoubleAttribute("ok");
 			fail("Should not work");
 		}
 		catch (XmlParseException e)

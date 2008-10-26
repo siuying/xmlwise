@@ -2,14 +2,14 @@ package xmlwise;
 
 /**
  * @author Christoffer Lerno
- * @version $Revision$ $Date$   $Author$
  */
 public class XmlParseException extends Exception
 {
+	private static final long serialVersionUID = -3246260520113823143L;
 
-	public XmlParseException(String message, Throwable cause)
+	public XmlParseException(Throwable cause)
 	{
-		super(message, cause);
+		super(cause);
 	}
 
 	public XmlParseException(String message)
@@ -17,8 +17,9 @@ public class XmlParseException extends Exception
 		super(message);
 	}
 
-	public XmlParseException(Exception e)
+	public XmlParseException(String message, Throwable cause)
 	{
-		super(e);
+		super(message, cause);
 	}
+
 }
