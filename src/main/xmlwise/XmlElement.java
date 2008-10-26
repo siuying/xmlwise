@@ -228,7 +228,7 @@ public class XmlElement extends LinkedList<XmlElement>
 		else
 		{
 			builder.append('>');
-			builder.append(Xml.escapeXML(m_value));
+			builder.append(Xmlwise.escapeXML(m_value));
 			for (XmlElement element : this)
 			{
 				builder.append(element.toXml());

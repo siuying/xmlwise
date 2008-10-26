@@ -125,7 +125,7 @@ public class XmlElementAttributes extends HashMap<String, String>
 		for (Map.Entry<String, String> entry : entrySet())
 		{
 			builder.append(' ').append(entry.getKey()).append("=").append("'");
-			builder.append(Xml.escapeXML(entry.getValue())).append("'");
+			builder.append(Xmlwise.escapeXML(entry.getValue())).append("'");
 		}
 		return builder.toString();
 	}

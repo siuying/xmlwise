@@ -12,7 +12,7 @@ public class XmlElementAttributesTest extends TestCase
 	@Override
 	protected void setUp() throws Exception
 	{
-		m_attributes = new XmlElementAttributes(Xml.createDocument("<x ab='cd' ef='12' y='12.5'/>").getDocumentElement());
+		m_attributes = new XmlElementAttributes(Xmlwise.createDocument("<x ab='cd' ef='12' y='12.5'/>").getDocumentElement());
 	}
 
 	public void testXmlElementAttributes() throws Exception
@@ -78,7 +78,7 @@ public class XmlElementAttributesTest extends TestCase
 	@SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
 	public void testGetBoolean() throws Exception
 	{
-		XmlElementAttributes attributes = new XmlElementAttributes(Xml.createDocument("<x ab='yes' ef='12' gh='true' ij='y' kl='no' m='n' o='false'/>").getDocumentElement());
+		XmlElementAttributes attributes = new XmlElementAttributes(Xmlwise.createDocument("<x ab='yes' ef='12' gh='true' ij='y' kl='no' m='n' o='false'/>").getDocumentElement());
 		assertTrue(attributes.getBoolean("ab"));
 		assertTrue(attributes.getBoolean("gh"));
 		assertTrue(attributes.getBoolean("ij"));
