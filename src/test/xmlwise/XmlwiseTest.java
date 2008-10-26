@@ -26,7 +26,7 @@ public class XmlwiseTest extends TestCase
 
 	public void testCreateDocument() throws Exception
 	{
-		XmlElement e = Xmlwise.createXmlTree("<x>foo</x>");
+		XmlElement e = Xmlwise.createXml("<x>foo</x>");
 		assertEquals("<x>foo</x>", e.toXml());
 	}
 
@@ -38,7 +38,7 @@ public class XmlwiseTest extends TestCase
 		FileOutputStream out = new FileOutputStream(f);
 		out.write("<xml><test/></xml>".getBytes());
 		out.close();
-		XmlElement e = Xmlwise.loadXmlTree(f.getAbsolutePath());
+		XmlElement e = Xmlwise.loadXml(f.getAbsolutePath());
 		assertEquals("<xml><test/></xml>", e.toXml());
 	}
 
@@ -53,7 +53,7 @@ public class XmlwiseTest extends TestCase
 		out.close();
 		try
 		{
-			Xmlwise.loadXmlTree(f.getAbsolutePath());
+			Xmlwise.loadXml(f.getAbsolutePath());
 			fail();
 		}
 		catch (XmlParseException e)
@@ -65,7 +65,7 @@ public class XmlwiseTest extends TestCase
 	{
 		try
 		{
-			Xmlwise.loadXmlTree("not.a.file.that.exists");
+			Xmlwise.loadXml("not.a.file.that.exists");
 			fail();
 		}
 		catch (IOException e)

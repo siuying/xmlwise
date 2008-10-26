@@ -15,7 +15,6 @@ import java.io.StringReader;
  */
 public class Xmlwise
 {
-
 	private Xmlwise() {}
 
 	/**
@@ -124,7 +123,7 @@ public class Xmlwise
 	 * @throws XmlParseException if parsing the file failed for some reason.
 	 * @throws IOException if there were any problems reading from the file.
 	 */
-	public static XmlElement loadXmlTree(String filename) throws XmlParseException, IOException
+	public static XmlElement loadXml(String filename) throws XmlParseException, IOException
 	{
 		return new XmlElement(loadDocument(filename).getDocumentElement());
 	}
@@ -136,7 +135,7 @@ public class Xmlwise
 	 * @return an XmlElement to use.
 	 * @throws XmlParseException if parsing the xml failed to validate for some reason.
 	 */
-	public static XmlElement createXmlTree(String xml) throws XmlParseException
+	public static XmlElement createXml(String xml) throws XmlParseException
 	{
 		return new XmlElement(createDocument(xml).getDocumentElement());
 	}
