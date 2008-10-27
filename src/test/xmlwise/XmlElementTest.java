@@ -18,6 +18,19 @@ public class XmlElementTest extends TestCase
 				"<x ab='cd&gt;' ef='12'><dfe x='34.1'/><ag>1</ag><ag/><jo test='yes'>hej&lt;</jo></x>").getDocumentElement());
 	}
 
+	public void testCreateXml()
+	{
+		m_xmlElement = new XmlElement("node", "'text'");
+		XmlElement subElement = new XmlElement("subnode");
+		m_xmlElement.add(subElement);
+		subElement.setAttribute("int", 5);
+		m_xmlElement.setAttribute("string", "\"'<&>'\"");
+		m_xmlElement.setAttribute("foo", "bar");
+		m_xmlElement.removeAttribute("foo");
+		assertEquals("<node string='&quot;&apos;&lt;&amp;&gt;&apos;&quot;'>" +
+		             "&apos;text&apos;<subnode int='5'/></node>",
+		             m_xmlElement.toXml());
+	}
 	public void testToXml() throws Exception
 	{
 		String backToXml = m_xmlElement.toXml();

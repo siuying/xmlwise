@@ -48,6 +48,31 @@ public class XmlElement extends LinkedList<XmlElement>
 	}
 
 	/**
+	 * Creates a new XmlElement with the given name and inner text value.
+	 *
+	 * @param name the name of the node.
+	 * @param value the inner text value of the node.
+	 */
+	public XmlElement(String name, String value)
+	{
+		m_attributes = new XmlElementAttributes();
+		m_name = name;
+		m_value = value;
+	}
+
+	/**
+	 * Creates a new XmlElement with the given name with no inner text.
+	 *
+	 * @param name the name of the node.
+	 */
+	public XmlElement(String name)
+	{
+		m_attributes = new XmlElementAttributes();
+		m_name = name;
+		m_value = "";
+	}
+
+	/**
 	 * Get the single direct sub-element with the given name.
 	 *
 	 * @param name the name of the sub-element.
@@ -189,6 +214,30 @@ public class XmlElement extends LinkedList<XmlElement>
 			}
 		}
 		return list;
+	}
+
+	/**
+	 * Convenience method to set an attribute on this
+	 * element.
+	 *
+	 * @param attribute the attribute to set.
+	 * @param value the new value of the attribute.
+	 */
+	public void setAttribute(String attribute, Object value)
+	{
+		m_attributes.put(attribute, value.toString());
+	}
+
+	/**
+	 * Convenience method to remove an attribute from this element.
+	 *
+	 * @param attribute the attribute to remove.
+	 * @return true if this attribute existed before it was removed,
+	 * false otherwise.
+	 */
+	public boolean removeAttribute(String attribute)
+	{
+		return m_attributes.remove(attribute) != null;
 	}
 
 	/**

@@ -20,6 +20,14 @@ import java.util.HashMap;
 @SuppressWarnings({"serial"})
 public class XmlElementAttributes extends HashMap<String, String>
 {
+
+	/**
+	 * Creates an empty element attribute map.
+	 */
+	XmlElementAttributes()
+	{
+	}
+
 	/**
 	 * Creates an object given an Element object.
 	 *
