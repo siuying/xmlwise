@@ -1,6 +1,8 @@
 package xmlwise;
 
 /**
+ * Generic exception when parsing xml.
+ * 
  * @author Christoffer Lerno
  */
 public class XmlParseException extends Exception
