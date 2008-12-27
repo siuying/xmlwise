@@ -7,6 +7,7 @@
 	<target name="init" description="init">
 		<!-- Create our temporary directories -->
 		<mkdir dir="_TEMP/classes"/>
+		<mkdir dir="_TEMP/debug_classes"/>
 		<mkdir dir="_DIST"/>
 	</target>
 
@@ -34,7 +35,7 @@
 	</target>
 
 	<target name="compile_debug" depends="init" description="Compile the sources with debug info">
-			<javac srcdir="src/main" destdir="_TEMP/classes" source="1.5"
+			<javac srcdir="src/main" destdir="_TEMP/debug_classes" source="1.5"
 			       debug="yes" debuglevel="lines,source" optimize="on"/>
 	</target>
 
@@ -55,7 +56,24 @@
 		</manifest>
 	</target>
 
-	<target name="build" depends="compile, create_manifest" description="Build jar">
+	<!-- Creates a manifest -->
+	<target name="create_manifest_debug" description="Creates a manifest for debug version">
+		<mkdir dir="_TEMP/classes_debug/META-INF"/>
+		<manifest file="_TEMP/classes_debug/META-INF/MANIFEST.MF">
+			<attribute name="Created-By" value="${user.name}"/>
+			<attribute name="Sealed" value="true"/>
+			 <section name="naga">
+				 <attribute name="Specification-Title" value="Xmlwise"/>
+				 <attribute name="Specification-Version" value="${major.version}.${minor.version}"/>
+				 <attribute name="Specification-Vendor" value="Xmlwise"/>
+				 <attribute name="Implementation-Title" value="xmlwise"/>
+				 <attribute name="Implementation-Version" value="Build ${build.number} ${TODAY}"/>
+				 <attribute name="Implementation-Vendor" value="Xmlwise"/>
+			 </section>
+		</manifest>
+	</target>
+
+	<target name="build" depends="compile, compile_debug, create_manifest, create_manifest_debug, javadoc" description="Build jar">
 		<buildnumber file="version.properties"/>
 		<delete dir="_TEMP/classes/src"/>
 		<jar destfile="_DIST/xmlwise-${major.version}_${minor.version}-r${build.number}.jar"
@@ -63,7 +81,7 @@
 		     basedir="_TEMP/classes" manifest="_TEMP/classes/META-INF/MANIFEST.MF"/>
 		<copydir src="src/main/" dest="_TEMP/classes/src"/>
 		<jar destfile="_DIST/xmlwise-debug-${major.version}_${minor.version}-r${build.number}.jar" manifest="_TEMP/classes/META-INF/MANIFEST.MF">
-			<fileset dir="_TEMP/classes"/>
+			<fileset dir="_TEMP/debug_classes"/>
 			<fileset dir="_TEMP" includes="docs/**"/>
 		</jar>
 	</target>
