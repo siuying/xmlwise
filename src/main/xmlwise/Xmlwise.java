@@ -47,8 +47,8 @@ public class Xmlwise
 		try
 		{
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-			documentBuilderFactory.setAttribute("http://apache.org/xml/features/nonvalidating/load-external-dtd",
-			                                    loadExternalDTD);
+//			documentBuilderFactory.setAttribute("http://apache.org/xml/features/nonvalidating/load-external-dtd",
+//			                                    loadExternalDTD);
 			documentBuilderFactory.setValidating(validate);
 			DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
 			return builder.parse(file);
@@ -77,8 +77,8 @@ public class Xmlwise
 		try
 		{
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-			documentBuilderFactory.setAttribute("http://apache.org/xml/features/nonvalidating/load-external-dtd",
-			                                    loadExternalDTD);
+//			documentBuilderFactory.setAttribute("http://apache.org/xml/features/nonvalidating/load-external-dtd",
+//			                                    loadExternalDTD);
 			documentBuilderFactory.setValidating(validate);
 			DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
 			return builder.parse(new InputSource(new StringReader(xml)));
