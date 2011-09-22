@@ -79,7 +79,7 @@ public final class Plist
 	 * @param data the nested data to store as a plist.
 	 * @return the resulting xml as a string.
 	 */
-	public static String toXml(Map<String, Object> data)
+	public static String toXml(Object data)
 	{
 		StringBuilder builder = new StringBuilder(
 				"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
